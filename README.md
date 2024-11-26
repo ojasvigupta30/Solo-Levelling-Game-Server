@@ -155,4 +155,9 @@ npm start
 - Introduce boss battles with unique mechanics.
 
 
+## Author
+
+### [Ojasvi Gupta](https://github.com/ojasvigupta30)
+
+
 
