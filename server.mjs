@@ -6,6 +6,7 @@ import cors from 'cors';
 import playerRoutes from './routes/playerRoutes.mjs';
 import dungeonRoutes from './routes/dungeonRoutes.mjs';
 import { errorHandler } from './middleware/errorHandler.mjs';
+import userRoutes from './routes/userRoutes.mjs';
 
 
 //Initialization
@@ -24,9 +25,11 @@ app.use(express.json({ extended: false }));
 app.use(errorHandler);
 
 
+
 //Routes
 app.use('/api/players', playerRoutes);
 app.use('/api/dungeons', dungeonRoutes);
+app.use('/api/users', userRoutes);
 
 
 //Listener
