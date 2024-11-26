@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5001;
 
 //MiddleWare
 app.use(cors());
-app.use(express.json({ extended: false }));
+app.use(express.json());
 app.use(errorHandler);
 
 

@@ -1,24 +1,17 @@
 import Player from '../models/Player.mjs';
 
-export const createPlayer = async (reqs, resp) => {
-   
-    const { username } = reqs.body;
-    try {
-        const newPlayer = await Player.create({ username });
-        resp.status(201).json(newPlayer);
-    } catch (error) {
-        resp.status(500).json({ error: error.message });
-    }
-};
+export const createPlayer = async (req, res) => {
+  const { playerName } = req.body;
 
-export const getPlayer = async (reqs, resp) => {
-    
-    const { id } = reqs.params;
-    try {
-        const player = await Player.findById(id);
-        if (!player) return resp.status(404).json({ message: 'Player not found' });
-        resp.status(200).json(player);
-    } catch (error) {
-        resp.status(500).json({ error: error.message });
+  try {
+    const existingPlayer = await Player.findOne({ playerName });
+    if (existingPlayer) {
+      return res.status(400).json({ message: 'Player name already exists' });
     }
+
+    const newPlayer = await Player.create({ playerName, userId: req.user.id });
+    res.status(201).json({ message: 'Player created successfully', player: newPlayer });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating player', error: error.message });
+  }
 };
