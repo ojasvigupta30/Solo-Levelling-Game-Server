@@ -24,6 +24,21 @@ export const createOrUpdatePlayer = async (req, res) => {
   };
   
 
+  // Fetch Player Profile
+export const getPlayerProfile = async (req, res) => {
+    try {
+      const player = await Player.findOne({ username: req.user.username });
+      if (!player) {
+        return res.status(404).json({ message: 'Player profile not found' });
+      }
+  
+      res.status(200).json(player);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching player profile', error: error.message });
+    }
+  };
+  
+
 // Fetch Player Details
 export const getPlayer = async (req, res) => {
   const { username } = req.params;
