@@ -1,9 +1,12 @@
 import express from 'express';
-import { getDungeons, createDungeon } from '../controllers/dungeonController.mjs';
+import { createDungeon, getDungeons, getDungeonById } from '../controllers/dungeonController.mjs';
+import { authenticateToken } from '../middleware/authMiddleware.mjs';
 
 const router = express.Router();
 
-router.get('/', getDungeons);
-router.post('/', createDungeon);
+// Protected routes
+router.post('/', authenticateToken, createDungeon);
+router.get('/', authenticateToken, getDungeons);
+router.get('/:id', authenticateToken, getDungeonById);
 
 export default router;

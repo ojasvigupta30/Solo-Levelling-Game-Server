@@ -1,23 +1,38 @@
 import Dungeon from '../models/Dungeon.mjs';
 import Monster from '../models/Monster.mjs';
 
-export const getDungeons = async (reqs, resp) => {
+// Create a dungeon
+export const createDungeon = async (req, res) => {
+  const { name, difficulty, monsters, loot } = req.body;
 
-    try {
-        const dungeons = await Dungeon.find().populate('monsters');
-        resp.status(200).json(dungeons);
-    } catch (error) {
-        resp.status(500).json({ error: error.message });
-    }
+  try {
+    const newDungeon = await Dungeon.create({ name, difficulty, monsters, loot });
+    res.status(201).json({ message: 'Dungeon created successfully', dungeon: newDungeon });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating dungeon', error: error.message });
+  }
 };
 
-export const createDungeon = async (reqs, resp) => {
-    
-    const { name, difficulty, monsters, loot } = reqs.body;
-    try {
-        const newDungeon = await Dungeon.create({ name, difficulty, monsters, loot });
-        resp.status(201).json(newDungeon);
-    } catch (error) {
-        resp.status(500).json({ error: error.message });
-    }
+// Get all dungeons
+export const getDungeons = async (req, res) => {
+  try {
+    const dungeons = await Dungeon.find().populate('monsters'); // Populate monster details
+    res.status(200).json(dungeons);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching dungeons', error: error.message });
+  }
+};
+
+// Get dungeon by ID
+export const getDungeonById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const dungeon = await Dungeon.findById(id).populate('monsters');
+    if (!dungeon) return res.status(404).json({ message: 'Dungeon not found' });
+
+    res.status(200).json(dungeon);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching dungeon', error: error.message });
+  }
 };
