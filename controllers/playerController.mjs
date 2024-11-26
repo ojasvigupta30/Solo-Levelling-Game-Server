@@ -2,27 +2,27 @@ import Player from '../models/Player.mjs';
 
 // Create or Update Player
 export const createOrUpdatePlayer = async (req, res) => {
-  const { username, inventory, skills } = req.body;
-
-  try {
-    // Check if the player already exists
-    let player = await Player.findOne({ username });
-
-    if (player) {
-      // Update inventory or skills if provided
-      if (inventory) player.inventory = [...player.inventory, ...inventory];
-      if (skills) player.skills = [...player.skills, ...skills];
-      await player.save();
-      return res.status(200).json({ message: 'Player updated successfully', player });
+    const { username } = req.body;
+  
+    console.log('Request to create/update player:', req.user, req.body);
+  
+    try {
+      let player = await Player.findOne({ username: req.user.username });
+  
+      if (player) {
+        player.username = username; // Update username if needed
+        await player.save();
+        return res.status(200).json({ message: 'Player updated successfully', player });
+      }
+  
+      player = await Player.create({ username: req.user.username });
+      res.status(201).json({ message: 'Player created successfully', player });
+    } catch (error) {
+      console.error('Error creating/updating player:', error.message);
+      res.status(500).json({ message: 'Error creating/updating player', error: error.message });
     }
-
-    // Create a new player
-    player = await Player.create({ username });
-    res.status(201).json({ message: 'Player created successfully', player });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating/updating player', error: error.message });
-  }
-};
+  };
+  
 
 // Fetch Player Details
 export const getPlayer = async (req, res) => {
