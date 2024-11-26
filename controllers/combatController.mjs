@@ -44,6 +44,9 @@ export const battleMonster = async (req, res) => {
       player.stats.defense += 3;
     }
 
+    // Add monster loot to player's inventory
+    player.inventory = [...player.inventory, ...monster.lootDrop];
+    
     await player.save();
 
     res.status(200).json({
