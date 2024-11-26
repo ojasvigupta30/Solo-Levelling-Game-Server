@@ -7,6 +7,7 @@ import playerRoutes from './routes/playerRoutes.mjs';
 import dungeonRoutes from './routes/dungeonRoutes.mjs';
 import { errorHandler } from './middleware/errorHandler.mjs';
 import userRoutes from './routes/userRoutes.mjs';
+import combatRoutes from './routes/combatRoutes.mjs';
 
 
 //Initialization
@@ -30,6 +31,7 @@ app.use(errorHandler);
 app.use('/api/players', playerRoutes);
 app.use('/api/dungeons', dungeonRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/combat', combatRoutes);
 
 
 //Listener
