@@ -6,6 +6,14 @@ const dungeonSchema = new mongoose.Schema({
   monsters: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Monster' }], // Link to Monster model
   loot: [{ type: String }], // List of loot items
   createdAt: { type: Date, default: Date.now },
+  boss: {
+    name: { type: String, required: true },
+    health: { type: Number, required: true },
+    attack: { type: Number, required: true },
+    defense: { type: Number, required: true },
+    lootDrop: [{ type: String }], // Loot for defeating the boss
+  },
+  
 });
 
 export default mongoose.model('Dungeon', dungeonSchema);

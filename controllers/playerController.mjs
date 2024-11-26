@@ -66,3 +66,20 @@ export const addXP = async (req, res) => {
     res.status(500).json({ message: 'Error adding XP', error: error.message });
   }
 };
+
+// Add item to player's inventory
+export const addToInventory = async (req, res) => {
+  const { username, item } = req.body;
+
+  try {
+    const player = await Player.findOne({ username });
+    if (!player) return res.status(404).json({ message: 'Player not found' });
+
+    player.inventory.push(item);
+    await player.save();
+
+    res.status(200).json({ message: 'Item added to inventory', inventory: player.inventory });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding item to inventory', error: error.message });
+  }
+};
